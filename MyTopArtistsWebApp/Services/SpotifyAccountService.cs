@@ -18,7 +18,7 @@ namespace MyTopArtistsWebApp
 
         public Task<string> GetToken(string clientId, string clientSecret)
         {
-            var request = new HttpRequestMessage(HttpMethod.Post, "toekn");
+            var request = new HttpRequestMessage(HttpMethod.Post, "token");
 
             request.Headers.Authorization = new AuthenticationHeaderValue(
                 "Basic", Convert.ToBase64String(Encoding.UTF8.GetBytes($"{clientId}:{clientSecret}")));
