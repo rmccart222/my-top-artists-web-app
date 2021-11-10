@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ConsumeSpotifyWebAPI.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -32,8 +33,10 @@ namespace MyTopArtistsWebApp
             var response = await _httpClient.SendAsync(request);
 
             response.EnsureSuccessStatusCode();
-            var responseStream = await response.Content.ReadAsStreamAsync();
-            var authResult = await JsonSerializer.DeserializeAsync<>(responseStream);
+            using var responseStream = await response.Content.ReadAsStreamAsync();
+            var authResult = await JsonSerializer.DeserializeAsync<AuthResult>(responseStream);
+
+            return authResult.access_token;
         }
     }
 }
