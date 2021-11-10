@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace MyTopArtistsWebApp
@@ -16,7 +17,7 @@ namespace MyTopArtistsWebApp
             _httpClient = httpclient;
         }
 
-        public Task<string> GetToken(string clientId, string clientSecret)
+        public async Task<string> GetToken(string clientId, string clientSecret)
         {
             var request = new HttpRequestMessage(HttpMethod.Post, "token");
 
@@ -27,6 +28,12 @@ namespace MyTopArtistsWebApp
             {
                 {"grant_type", "client_credentials"}
             });
+
+            var response = await _httpClient.SendAsync(request);
+
+            response.EnsureSuccessStatusCode();
+            var responseStream = await response.Content.ReadAsStreamAsync();
+            var authResult = await JsonSerializer.DeserializeAsync<>(responseStream);
         }
     }
 }
