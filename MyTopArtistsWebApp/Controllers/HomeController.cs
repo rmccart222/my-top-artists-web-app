@@ -11,15 +11,24 @@ namespace MyTopArtistsWebApp.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ISpotifyAccountService _spotifyAccountService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ISpotifyAccountService spotifyAccountService)
         {
-            _logger = logger;
+           _spotifyAccountService = spotifyAccountService;
         }
 
         public IActionResult Index()
         {
+            try 
+            { 
+                var token = _spotifyAccountService.GetToken()
+            }
+            catch (Exception ex)
+            {
+                Debug.Write(ex);
+            }
+
             return View();
         }
 

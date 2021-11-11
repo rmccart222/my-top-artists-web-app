@@ -23,6 +23,10 @@ namespace MyTopArtistsWebApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHttpClient<ISpotifyAccountService, SpotifyAccountService>(c =>
+                {
+                    c.BaseAddress = new Uri("https://accounts.spotify.com/api/");
+                });
             services.AddControllersWithViews();
         }
 
