@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using MyTopArtistsWebApp.Models;
 using System;
@@ -12,17 +13,19 @@ namespace MyTopArtistsWebApp.Controllers
     public class HomeController : Controller
     {
         private readonly ISpotifyAccountService _spotifyAccountService;
+        private readonly IConfiguration _configuration;
 
-        public HomeController(ISpotifyAccountService spotifyAccountService)
+        public HomeController(ISpotifyAccountService spotifyAccountService, IConfiguration configuration)
         {
            _spotifyAccountService = spotifyAccountService;
+            _configuration = configuration;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             try 
-            { 
-                var token = _spotifyAccountService.GetToken()
+            {
+                var token = await _spotifyAccountService.GetToken(_configuration["Spotify:ClientId"], _configuration["Spotify:ClientSecret"]);
             }
             catch (Exception ex)
             {
