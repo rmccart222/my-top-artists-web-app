@@ -8,6 +8,6 @@ namespace MyTopArtistsWebApp
 {
     public interface ISpotifyService
     {
-        Task<IEnumerable<Release>> GetNewReleases(string countryCode, int limit, string accessToken);
+        Task<IEnumerable<TopArtists>> GetTopArtists(int limit, string accessToken);
     }
 }

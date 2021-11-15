@@ -18,16 +18,24 @@ namespace MyTopArtistsWebApp
             _httpClient = httpClient;
         }
 
-        public async Task<IEnumerable<TopArtists>> GetTopArtists(string countryCode, int limit, string accessToken)
+        public async Task<IEnumerable<TopArtists>> GetTopArtists(int limit, string accessToken)
         {
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
-            var response = await _httpClient.GetAsync($"browse/new-releases?country={countryCode}&limit={limit}");
+            var response = await _httpClient.GetAsync($"browse/artists?time_range=medium_term&limit={limit}");
 
             response.EnsureSuccessStatusCode();
 
             using var responseStream = await response.Content.ReadAsStreamAsync();
-            var responseObject = await JsonSerializer.Deserialize<GetTopArtistsResult>(responseStream);
+            var responseObject = await JsonSerializer.DeserializeAsync<GetTopArtistsResult>(responseStream);
+
+            return responseObject?.items.Select(i => new TopArtists
+            {
+                Name = i.name,
+                Genre = i.genres,
+                External_Urls = i.external_urls,
+                Images = i.images
+            });
         }
     }
 }

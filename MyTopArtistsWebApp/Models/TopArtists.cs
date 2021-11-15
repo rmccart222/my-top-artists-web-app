@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 
 namespace MyTopArtistsWebApp
 {
-    public class Release
+    public class TopArtists
     {
         public string Name { get; set; }
-        public string Artists { get; set; }
-        public string Date { get; set; }
-        public string Image { get; set; }
-        public string ReleaseLink { get; set; }
+        public string[] Genre { get; internal set; }
+        public External_Urls External_Urls { get; internal set; }
+        public Image[] Images { get; internal set; }
     }
 }
