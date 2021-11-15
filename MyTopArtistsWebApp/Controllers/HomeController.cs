@@ -14,25 +14,39 @@ namespace MyTopArtistsWebApp.Controllers
     {
         private readonly ISpotifyAccountService _spotifyAccountService;
         private readonly IConfiguration _configuration;
+        private readonly ISpotifyService _spotifyService;
 
-        public HomeController(ISpotifyAccountService spotifyAccountService, IConfiguration configuration)
+        public HomeController(
+            ISpotifyAccountService spotifyAccountService, IConfiguration configuration,
+            ISpotifyService spotifyService)
         {
            _spotifyAccountService = spotifyAccountService;
             _configuration = configuration;
+            _spotifyService = spotifyService;
         }
 
         public async Task<IActionResult> Index()
         {
-            try 
+            var topArtists = await GetTopArtists();
+            return View(topArtists);
+        }
+
+        private async Task<IEnumerable<TopArtists>> GetTopArtists() 
+        {
+            try
             {
                 var token = await _spotifyAccountService.GetToken(_configuration["Spotify:ClientId"], _configuration["Spotify:ClientSecret"]);
-            }
+
+                var topArtists = await _spotifyService.GetTopArtists(20, token);
+
+                return topArtists;
+             }
             catch (Exception ex)
             {
                 Debug.Write(ex);
-            }
 
-            return View();
+                return Enumerable.Empty<TopArtists>();
+            }
         }
 
         public IActionResult Privacy()
