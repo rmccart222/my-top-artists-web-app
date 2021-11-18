@@ -27,25 +27,25 @@ namespace MyTopArtistsWebApp.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var topArtists = await GetTopArtists();
-            return View(topArtists);
+            var newReleases = await GetReleases();
+            return View(newReleases);
         }
 
-        private async Task<IEnumerable<TopArtists>> GetTopArtists() 
+        private async Task<IEnumerable<Release>> GetReleases() 
         {
             try
             {
                 var token = await _spotifyAccountService.GetToken(_configuration["Spotify:ClientId"], _configuration["Spotify:ClientSecret"]);
 
-                var topArtists = await _spotifyService.GetTopArtists(20, token);
+                var newReleases = await _spotifyService.GetNewReleases("US", 20, token);
 
-                return topArtists;
+                return newReleases;
              }
             catch (Exception ex)
             {
                 Debug.Write(ex);
 
-                return Enumerable.Empty<TopArtists>();
+                return Enumerable.Empty<Release>();
             }
         }
 

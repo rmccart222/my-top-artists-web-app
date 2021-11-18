@@ -1,4 +1,4 @@
-﻿@model IEnumerable<MyTopArtistsWebApp.Models.TopArtists>
+﻿@model IEnumerable<MyTopArtistsWebApp.Models.Release>
 
 @{
     ViewData["Title"] = "Home Page";
@@ -6,14 +6,15 @@
 
 <div class="row">
     @foreach (var item in Model)
-    { 
-       <div class="card m-1" style="width:350px">
-           <div class="card-body">
-               <h5 class="card-title">@Html.DisplayFor(modelItem => item.Name)</h5>
-               <h6 class="card-subtitle mb-2">@Html.DisplayFor(modelItem => item.Genre)</h6>
-               <img src="@Html.DisplayFor(modelItem => item.Images)" width="300" height="300" alt="Artist Image"/>
-               <a href="@Html.DisplayFor(modelItem => item.External_Urls)" target="_blank">Link</a>
-           </div>
-       </div>
+    {
+        <div class="card m-1" style="width:350px">
+            <div class="card-body">
+                <h5 class="card-title">@Html.DisplayFor(modelItem => item.Name)</h5>
+                <h6 class="card-subtitle mb-2">@Html.DisplayFor(modelItem => item.Name)</h6>
+                <p class="card-text">@Html.DisplayFor(modelItem => item.Date)</p>
+                <img src="@Html.DisplayFor(modelItem => item.ImageUrl)" width="300" height="300" alt="Album Image" />
+                <a href="@Html.DisplayFor(modelItem => item.Link)" target="_blank">Link</a>
+            </div>
+        </div>
     }
 </div>
